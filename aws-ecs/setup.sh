@@ -68,7 +68,7 @@ CLUSTER_STATUS=$(aws ecs describe-clusters --clusters weave-ecs-demo-cluster --q
 if [ "$CLUSTER_STATUS" != "None" -a "$CLUSTER_STATUS" != "INACTIVE" ]; then
     echo "error: ECS cluster weave-ecs-demo-cluster is active, run cleanup.sh first"
     exit 1
-fi    
+fi
 
 
 set -euo pipefail
@@ -109,9 +109,9 @@ echo -n "Creating Security Group (weave-ecs-demo) .. "
 SECURITY_GROUP_ID=$(aws ec2 create-security-group --group-name weave-ecs-demo --vpc-id $VPC_ID --description 'Weave ECS Demo' --query 'GroupId' --output text)
 # Wait for the group to get associated with the VPC
 sleep 5
-aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp --port 22 --cidr 0.0.0.0/0
-aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp --port 80 --cidr 0.0.0.0/0
-aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp --port 4040 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp --port 22 --cidr 198.39.100.45/24
+aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp --port 80 --cidr 198.39.100.45/24
+aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp --port 4040 --cidr 198.39.100.45/24
 # Weave
 aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp --port 6783 --source-group $SECURITY_GROUP_ID
 aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol udp --port 6783 --source-group $SECURITY_GROUP_ID
